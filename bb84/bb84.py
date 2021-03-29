@@ -16,9 +16,11 @@ def main():
 
   circuit = BB84(FLAGS.qubit_num, alice_basis, bob_basis, alice_measures);
   result = cirq.Simulator().run(program = circuit, repetitions = 1);
-  print(result);
+  print(result.measurements);
 
 if __name__ == "__main__":
 
+  import sys;
+  FLAGS(sys.argv)
   main();
 
