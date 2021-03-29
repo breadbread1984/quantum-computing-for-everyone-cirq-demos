@@ -11,14 +11,13 @@ def BB84(qubit_num, alice_basis, bob_basis, alice_measures):
   # 2) initialize qubits according to alice measures
   # alice's qubits
   for idx, basis in enumerate(alice_basis):
-    # flip qubits according to measure results
+    # qubits of random status prepared by alice
     circuit.append(cirq.I(qubits[idx]) if alice_measures[idx] == 0 else cirq.X(qubits[idx]));
-    # change qubits status if basis is on X axis
+    # qubits after alice's measures, status changes if the measure is done on X axis
     circuit.append(cirq.I(qubits[idx]) if basis == 0 else cirq.H(qubits[idx]));
   # bob's measures
   for idx, basis in enumerate(bob_basis):
-    # NOTE: actually the measure result is arbitrary if bob uses different basis from alice's
-    # the behavior here is not what happens in the real world.
+    # qubits after bob's measures, status changes if the measure is done on different basis from alice's
     circuit.append(cirq.I(qubits[idx]) if bob_basis[idx] == alice_basis[idx] else cirq.H(qubits[idx]));
   circuit.append(cirq.measure_each(*qubits));
   return circuit;
