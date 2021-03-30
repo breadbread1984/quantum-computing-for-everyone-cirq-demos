@@ -10,13 +10,14 @@ flags.DEFINE_integer("qubit_num", 10, "number of qubits");
 
 def main():
 
-  alice_basis = np.random.randint(0,2,size = (FLAGS.qubit_num,));
-  bob_basis = np.random.randint(0,2,size = (FLAGS.qubit_num,));
-  alice_measures = np.random.randint(0,2,size = (FLAGS.qubit_num,));
+  alice_basis = np.random.randint(0,2,size = (FLAGS.qubit_num * 4,));
+  bob_basis = np.random.randint(0,2,size = (FLAGS.qubit_num * 4,));
+  alice_measures = np.random.randint(0,2,size = (FLAGS.qubit_num * 4,));
 
-  circuit = BB84(FLAGS.qubit_num, alice_basis, bob_basis, alice_measures);
+  circuit = BB84(FLAGS.qubit_num * 4, alice_basis, bob_basis, alice_measures);
   result = cirq.Simulator().run(program = circuit, repetitions = 1);
-  print(result.measurements);
+  obtained_key = [int(result.measurements[str(i)]) for i in range(FLAGS.qubit_num * 4) if alice_basis[i] == bob_basis[i]];
+  print(obtained_key);
 
 if __name__ == "__main__":
 
