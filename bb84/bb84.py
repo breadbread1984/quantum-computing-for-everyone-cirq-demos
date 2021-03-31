@@ -25,17 +25,18 @@ def main():
     if len(alice_measures_on_same_basis) < 2: continue;
     # idx is sent from alice to bob
     indices = np.random.choice(range(len(alice_measures_on_same_basis)), len(alice_measures_on_same_basis) // 2, replace = False);
-    # 3.1) if no eve exists both alice and bob use the rest of the measures taken on the same basis as symmetric key
-    alice_chosed_measures = np.array(alice_measures_on_same_basis)[indices];
-    bob_chosed_measures = np.array(bob_measures_on_same_basis)[indices];
+    alice_chosed_measures = np.array(alice_measures_on_same_basis)[indices]; # alice chooses privately
+    bob_chosed_measures = np.array(bob_measures_on_same_basis)[indices]; # bob chooses privately
     if np.all(alice_chosed_measures == bob_chosed_measures):
+      # 3.1) if no eve exists both alice and bob use the rest of the measures taken on the same basis as symmetric key
       print("no Eve eavesdropping");
-      final_alice_key = [alice_measures_on_same_basis[index] for index in range(len(alice_measures_on_same_basis)) if index not in indices];
-      final_bob_key = [bob_measures_on_same_basis[index] for index in range(len(bob_measures_on_same_basis)) if index not in indices];
+      final_alice_key = [alice_measures_on_same_basis[index] for index in range(len(alice_measures_on_same_basis)) if index not in indices]; # alice chooses privately
+      final_bob_key = [bob_measures_on_same_basis[index] for index in range(len(bob_measures_on_same_basis)) if index not in indices]; # bob chooses privately
       print("alice's key = ", final_alice_key);
       print("bob's key = ", final_bob_key);
       break;
     else:
+      # 3.2) else do the key distribution process again
       print("detected Eve eavesdropping, do the key distribution process again");
       continue;
 
