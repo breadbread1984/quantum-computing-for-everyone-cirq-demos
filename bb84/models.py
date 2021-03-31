@@ -18,6 +18,6 @@ def BB84(qubit_num, alice_basis, bob_basis, alice_measures):
   # bob's measures
   for idx, basis in enumerate(bob_basis):
     # qubits after bob's measures, status changes if the measure is done on different basis from alice's
-    circuit.append(cirq.I(qubits[idx]) if bob_basis[idx] == alice_basis[idx] else cirq.H(qubits[idx]));
+    circuit.append(cirq.I(qubits[idx]) if bob_basis[idx] == 0 else cirq.H(qubits[idx]));
   circuit.append(cirq.measure_each(*qubits));
   return circuit;
