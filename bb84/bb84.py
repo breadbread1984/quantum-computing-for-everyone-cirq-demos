@@ -7,13 +7,15 @@ from models import BB84;
 
 FLAGS = flags.FLAGS;
 flags.DEFINE_integer("key_length", 5, "expected key length");
+flags.DEFINE_boolean("has_eve", False, "whether eve presents");
 
 def main():
 
   alice_basises = np.random.randint(0,2,size = (FLAGS.key_length * 4,));
   bob_basises = np.random.randint(0,2,size = (FLAGS.key_length * 4,));
+  eve_basises = np.random.randint(0,2,size = (FLAGS.key_length * 4,)) if FLAGS.has_eve else None;
 
-  circuit, alice_measures = BB84(FLAGS.key_length * 4, alice_basises, bob_basises);
+  circuit, alice_measures = BB84(FLAGS.key_length * 4, alice_basises, bob_basises, eve_basises);
   while True:
     result = cirq.Simulator().run(program = circuit, repetitions = 1);
     # 1) what alice knows exclusively
