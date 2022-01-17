@@ -3,21 +3,19 @@
 import numpy as np;
 import cirq;
 
-def BB84(qubit_num, alice_basis, bob_basis, alice_measures):
+def BB84(qubit_num, alice_basises, bob_basises):
 
   # 1) allocation n qubits with 0> value
   qubits = [cirq.LineQubit(i) for i in range(qubit_num)];
   circuit = cirq.Circuit();
   # 2) initialize qubits according to alice measures
   # alice's qubits
-  for idx, basis in enumerate(alice_basis):
-    # qubits of random status prepared by alice
-    circuit.append(cirq.I(qubits[idx]) if alice_measures[idx] == 0 else cirq.X(qubits[idx]));
-    # qubits after alice's measures, status changes if the measure is done on X axis
-    circuit.append(cirq.I(qubits[idx]) if basis == 0 else cirq.H(qubits[idx]));
-  # bob's measures
-  for idx, basis in enumerate(bob_basis):
-    # qubits after bob's measures, status changes if the measure is done on different basis from alice's
-    circuit.append(cirq.I(qubits[idx]) if bob_basis[idx] == 0 else cirq.H(qubits[idx]));
+  alice_measures = list();
+  for idx, (alice_basis, bob_basis) in enumerate(zip(alice_basises, bob_basises)):
+    # alice's measures by alice's random basis
+    alice_measures.append(np.random.randint(low = 0, high = 2));
+    circuit.append(cirq.I(qubits[idx]) if alice_measures[-1] == 0 else cirq.X(qubits[idx]));
+    # if alice's basis is the same as bob's basis the measures of both are the same, or measure the quabit from a perpendicular direction
+    circuit.append(cirq.I(qubits[idx]) if alice_basis == bob_basis else cirq.H(qubits[idx]));
   circuit.append(cirq.measure_each(*qubits));
-  return circuit;
+  return circuit, alice_measures;
