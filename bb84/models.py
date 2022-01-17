@@ -18,7 +18,7 @@ def BB84(qubit_num, alice_basises, bob_basises, eve_basises = None):
     # if eve presents
     if eve_basises is not None:
       circuit.append(cirq.I(qubits[idx]) if alice_basis == eve_basises[idx] else cirq.H(qubits[idx]));
-      circuit.append(cirq.measure_each(*qubits)); # eve measures
+      circuit.append(cirq.measure_each(qubits[idx])); # eve measures
       circuit.append(cirq.I(qubits[idx]) if eve_basises[idx] == bob_basis else cirq.H(qubits[idx]));
     else:
       # if alice's basis is the same as bob's basis the measures of both are the same, or measure the quabit from a perpendicular direction
