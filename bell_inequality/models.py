@@ -29,6 +29,26 @@ def predefined_results():
   return results, a_counts / (a_counts + d_counts);
 
 def strange_results():
+  probability = 0;
+  measure = lambda basis, superposition: np.dot(np.transpose(basis), superposition);
+  basises = [np.array([[1,0],[0,1]]),
+             np.array([[1/2, -np.sqrt(3)/2],[np.sqrt(3)/2, 1/2]]),
+             np.array([[-1/2, -np.sqrt(3)/2],[np.sqrt(3)/2, -1/2]]),];
+  for basis1 in basises:
+    for basis2 in basises:
+      combination_probability = 1/3 * 1/3;
+      measure1_probability = 1/2;
+      # both measure results are 0
+      measure1 = basis1[:,0:1]; # measure1.shape = (2,1)
+      measure2 = measure(basis2, measure1); # measure2.shape = (2,1)
+      probability += combination_probability * measure1_probability * measure1[0,0] ** 2;
+      # both measure results are 1
+      measure1 = basis1[:,1:2]; # measure1.shape = (2,1)
+      measure2 = measure(basis2, measure1); # measure2.shape = (2,1)
+      probability += combination_probability * measure1_probability * measure2[1,0] ** 2;
+  return probability;
+
+def measure_network():
   q1 = cirq.devices.LineQubit(0); # q1 = 1*0>+0*1>
   q2 = cirq.devices.LineQubit(1); # q2 = 1*0>+0*1>
   circuit = cirq.circuits.Circuit();
