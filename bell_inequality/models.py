@@ -37,7 +37,7 @@ def strange_results():
              np.array([[-1/2, -np.sqrt(3)/2],[np.sqrt(3)/2, -1/2]]),];
   for basis1 in basises:
     for basis2 in basises:
-      combination_probability = 1/3 * 1/3;
+      combination_probability = 1/len(basises) * 1/len(basises);
       measure1 = measure(basis1, status); # measure1.shape = (2,1)
       measure2 = measure(basis2, measure1); # measure2.shape = (2,1)
       # NOTE: both measure results are 0 or 1
@@ -48,7 +48,24 @@ def measure_network():
   q1 = cirq.devices.LineQubit(0); # q1 = 1*0>+0*1>
   q2 = cirq.devices.LineQubit(1); # q2 = 1*0>+0*1>
   circuit = cirq.circuits.Circuit();
+  # 1) generate a pair of entangled qubits
   circuit.append(cirq.ops.H(q1)); # q1 = 1/sqrt(2)*0>+1/sqrt(2)*1>
   circuit.append(cirq.ops.CNOT(q1, q2));
   # q1 odot q2 = 1/sqrt(2)*00> + 0*01> + 0*10> + 1/sqrt(2)*11>
-  
+  # 2) measure with random two basises
+  basises = np.random.choice([i for i in range(3)], size = 2, replace = True);
+  if basises[0] == 0:
+    circuit.append(cirq.ops.I(q1));
+  elif basises[0] == 1:
+    circuit.append(cirq.ops.ry(-120)(q1));
+  elif basises[0] == 2:
+    circuit.append(cirq.ops.ry(-240)(q1));
+  circuit.append(cirq.ops.measure_each(q1));
+  if basises[1] == 0:
+    circuit.append(cirq.ops.I(q2));
+  elif basises[1] == 1:
+    circuit.append(cirq.ops.ry(-120)(q2));
+  elif basises[1] == 2:
+    circuit.append(cirq.ops.ry(-240)(q2));
+  circuit.append(cirq.ops.measure_each(q2));
+  return circuit;
