@@ -4,18 +4,29 @@ import numpy as np;
 import cirq;
 
 def predefined_results():
-  measure = lambda basis, superposition: np.dot(np.transpose(basis), superposition);
-  superposition = np.transpose([[1/np.sqrt(2),1/np.sqrt(2)]]); # q=1/sqrt(2)*0>+1/sqrt(2)*1>
-  basises = [np.array([[1,0],[0,1]]), # [B1(0), B2(0)]
-             np.array([[1/2,-np.sqrt(3)/2],[np.sqrt(3)/2,1/2]]), # [B1(120), B2(120)]
-             np.array([[-1/2,-np.sqrt(3)/2],[np.sqrt(3)/2,-1/2]]),]; # [B1(240), B2(240)]
+  results = dict();
+  a_counts = 0;
+  d_counts = 0;
   for combination in range(8):
     binary = bin(combination)[2:];
     predefined_measure_results = '0' * (3 - len(binary)) + binary;
     assert len(predefined_measure_results) == 3;
-    for basis1 in basises:
-      for basis2 in basises:
-        
+    results[predefined_measure_results] = list();
+    # basises are one among [B1(0),B2(0)], [B1(120),B2(120)], [B1(240), B2(240)]
+    for basis1_idx in range(3):
+      measure1_result = int(predefined_measure_results[basis1_idx]); # 0> or 1>
+      for basis2_idx in range(3):
+        measure2_result = int(predefined_measure_results[basis2_idx]); # 0> or 1>
+        if measure1_result == measure2_result:
+          # two measures are the same
+          results[predefined_measure_results].append('A');
+          a_counts += 1;
+        else:
+          # two measures are different
+          results[predefined_measure_results].append('D');
+          d_counts += 1;
+  print(results);
+  return a_counts / (a_counts + d_counts);
 
 def strange_results():
   q1 = cirq.devices.LineQubit(0); # q1 = 1*0>+0*1>
