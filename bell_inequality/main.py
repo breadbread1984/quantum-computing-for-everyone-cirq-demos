@@ -11,7 +11,10 @@ def add_options():
 
 def main(unused_argv):
   if FLAGS.predefined:
-    print('if results are predefined, the measure is just exposing the results. then the probability of two measure results concides with each other is %f', predefined_results());
+    results, probability = predefined_results();
+    for key, results in results.items():
+      print(key, results);
+    print('if results are predefined, the measure is just exposing the results. then the probability of two measure results concide with each other is %f', probability);
   else:
     pass;
 
