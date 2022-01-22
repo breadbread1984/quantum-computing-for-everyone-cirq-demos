@@ -53,7 +53,7 @@ def measure_network():
   circuit.append(cirq.ops.CNOT(q1, q2));
   # q1 odot q2 = 1/sqrt(2)*00> + 0*01> + 0*10> + 1/sqrt(2)*11>
   # 2) measure with random two basises
-  basises = np.random.choice([i for i in range(3)], size = 2, replace = True);
+  basises = np.random.randint(low = 0, high = 3, size = (2,));
   if basises[0] == 0:
     circuit.append(cirq.ops.I(q1));
   elif basises[0] == 1:
