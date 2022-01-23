@@ -14,7 +14,7 @@ def main():
   print('if results are defined at measure time. then the probability of two measure results concide with each other is %f' % probability);
   # 3) experimental results
   circuit = measure_network();
-  results = cirq.Simulator().run(program = circuit, repetitions = 100);
+  results = cirq.Simulator().run(program = circuit, repetitions = 10000);
   same_count = 0;
   total_count = 0;
   for q1, q2 in zip(results.measurements['0'], results.measurements['1']):

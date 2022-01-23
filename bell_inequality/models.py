@@ -57,15 +57,15 @@ def measure_network():
   if basises[0] == 0:
     circuit.append(cirq.ops.I(q1));
   elif basises[0] == 1:
-    circuit.append(cirq.ops.ry(-120)(q1));
+    circuit.append(cirq.ops.ry(-120/180*np.pi)(q1));
   elif basises[0] == 2:
-    circuit.append(cirq.ops.ry(-240)(q1));
+    circuit.append(cirq.ops.ry(-240/180*np.pi)(q1));
   circuit.append(cirq.ops.measure_each(q1));
   if basises[1] == 0:
     circuit.append(cirq.ops.I(q2));
   elif basises[1] == 1:
-    circuit.append(cirq.ops.ry(-120)(q2));
+    circuit.append(cirq.ops.ry(-120/180*np.pi)(q2));
   elif basises[1] == 2:
-    circuit.append(cirq.ops.ry(-240)(q2));
+    circuit.append(cirq.ops.ry(-240/180*np.pi)(q2));
   circuit.append(cirq.ops.measure_each(q2));
   return circuit;
