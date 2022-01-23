@@ -6,12 +6,12 @@ import cirq;
 def ekert(qubit_num, alice_basises, bob_basises):
   assert qubit_num % 3 == 0;
   alice_qubits = [cirq.devices.GridQubit(0, i) for i in range(qubit_num)];
-  bob_qubits = [cirq.devices.LineQubit(1, i) for i in range(qubit_num)];
+  bob_qubits = [cirq.devices.GridQubit(1, i) for i in range(qubit_num)];
   circuit = cirq.circuits.Circuit();
   # 1) generate a pair of entangled qubits
   for i in range(qubit_num):
     circuit.append(cirq.ops.H(alice_qubits[i]));
-    circuit.append(cirq.ops.CNOT(alice_qubits[i], bob_qubits[i])));
+    circuit.append(cirq.ops.CNOT(alice_qubits[i], bob_qubits[i]));
   # q1 odot q2 = 1/sqrt(2)*00> + 1/sqrt(2)*11>
   # 2) measure with random basis
   for i in range(qubit_num):

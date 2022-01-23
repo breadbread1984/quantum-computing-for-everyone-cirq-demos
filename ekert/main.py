@@ -2,7 +2,7 @@
 
 import numpy as np;
 import cirq;
-from absl import flags;
+from absl import app, flags;
 from models import ekert;
 
 FLAGS = flags.FLAGS;
