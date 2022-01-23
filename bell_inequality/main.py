@@ -13,12 +13,13 @@ def main():
   probability = strange_results();
   print('if results are defined at measure time. then the probability of two measure results concide with each other is %f' % probability);
   # 3) experimental results
-  circuit = measure_network();
-  results = cirq.Simulator().run(program = circuit, repetitions = 10000);
+  qubit_num = 10;
+  circuit = measure_network(qubit_num);
+  results = cirq.Simulator().run(program = circuit, repetitions = 1);
   same_count = 0;
   total_count = 0;
-  for q1, q2 in zip(results.measurements['0'], results.measurements['1']):
-    if q1 == q2: same_count += 1;
+  for i in range(qubit_num):
+    if results.measurements['(%d, %d)' % (0, i)] == results.measurements['(%d, %d)' % (1, i)]: same_count += 1;
     total_count += 1;
   print('the probability of same measurements is %f' % (same_count / total_count));
 

@@ -44,28 +44,30 @@ def strange_results():
       probability += combination_probability * (measure1[0,0]**2 * measure2[0,0]**2 + measure1[1,0]**2 * measure2[1,0]**2);
   return probability;
 
-def measure_network():
-  q1 = cirq.devices.LineQubit(0); # q1 = 1*0>+0*1>
-  q2 = cirq.devices.LineQubit(1); # q2 = 1*0>+0*1>
+def measure_network(qubit_num):
+  q1 = [cirq.devices.GridQubit(0, i) for i in range(qubit_num)]; # q1 = 1*0>+0*1>
+  q2 = [cirq.devices.GridQubit(1, i) for i in range(qubit_num)]; # q2 = 1*0>+0*1>
   circuit = cirq.circuits.Circuit();
   # 1) generate a pair of entangled qubits
-  circuit.append(cirq.ops.H(q1)); # q1 = 1/sqrt(2)*0>+1/sqrt(2)*1>
-  circuit.append(cirq.ops.CNOT(q1, q2));
+  for i in range(qubit_num):
+    circuit.append(cirq.ops.H(q1[i])); # q1 = 1/sqrt(2)*0>+1/sqrt(2)*1>
+    circuit.append(cirq.ops.CNOT(q1[i], q2[i]));
   # q1 odot q2 = 1/sqrt(2)*00> + 0*01> + 0*10> + 1/sqrt(2)*11>
   # 2) measure with random two basises
-  basises = np.random.randint(low = 0, high = 3, size = (2,));
-  if basises[0] == 0:
-    circuit.append(cirq.ops.I(q1));
-  elif basises[0] == 1:
-    circuit.append(cirq.ops.ry(-120/180*np.pi)(q1));
-  elif basises[0] == 2:
-    circuit.append(cirq.ops.ry(-240/180*np.pi)(q1));
-  circuit.append(cirq.ops.measure_each(q1));
-  if basises[1] == 0:
-    circuit.append(cirq.ops.I(q2));
-  elif basises[1] == 1:
-    circuit.append(cirq.ops.ry(-120/180*np.pi)(q2));
-  elif basises[1] == 2:
-    circuit.append(cirq.ops.ry(-240/180*np.pi)(q2));
-  circuit.append(cirq.ops.measure_each(q2));
+  basises = np.random.randint(low = 0, high = 3, size = (2, qubit_num));
+  for i in range(qubit_num):
+    if basises[0,i] == 0:
+      circuit.append(cirq.ops.I(q1[i]));
+    elif basises[0,i] == 1:
+      circuit.append(cirq.ops.ry(-120/180*np.pi)(q1[i]));
+    elif basises[0,i] == 2:
+      circuit.append(cirq.ops.ry(-240/180*np.pi)(q1[i]));
+    circuit.append(cirq.ops.measure_each(q1[i]));
+    if basises[1,i] == 0:
+      circuit.append(cirq.ops.I(q2[i]));
+    elif basises[1,i] == 1:
+      circuit.append(cirq.ops.ry(-120/180*np.pi)(q2[i]));
+    elif basises[1,i] == 2:
+      circuit.append(cirq.ops.ry(-240/180*np.pi)(q2[i]));
+    circuit.append(cirq.ops.measure_each(q2[i]));
   return circuit;
