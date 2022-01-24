@@ -13,7 +13,7 @@ def main(unused_argv):
   assert search('[^01]', FLAGS.message) is None, "can only send string composed of 0 and 1";
   assert len(FLAGS.message) % 2 == 0, "length of the message must be even";
   circuit = superdense_coding(FLAGS.message);
-  result = cirq.Simulator().run(program = circuit, repetition = 1);
+  result = cirq.Simulator().run(program = circuit, repetitions = 1);
   received_message = '';
   for q1, q2 in zip(result.measurements['0'], result.measurements['1']):
     if q1 == 0 and q2 == 0: received_message += '00';
