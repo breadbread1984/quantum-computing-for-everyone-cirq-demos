@@ -30,6 +30,9 @@ def main(unused_argv):
   same_count = np.sum((np.array(alice_measures_on_different_basis) == np.array(bob_measures_on_different_basis)).astype(np.int32));
   total_count = len(alice_measures_on_different_basis);
   print('actual probability of both alice and bob get the same measure when they choose different basis is %f' % (same_count / total_count));
+  # FIXME: the actual probability is volatile, cannot decide whether to accept key base according to it.
+  print("alice's key = ", alice_measures_on_same_basis);
+  print("bob's key = ", bob_measures_on_same_basis);
 
 if __name__ == "__main__":
   app.run(main);
