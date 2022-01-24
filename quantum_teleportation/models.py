@@ -1,9 +1,10 @@
 #!/usr/bin/python3
 
+from re import search;
 import numpy as np;
 import cirq;
 
-def quantum_teleportation(qubit_num):
+def quantum_teleportation_send(qubit_num):
   alice_qubits = [cirq.devices.GridQubit(0,i) for i in range(qubit_num)];
   bob_qubits = [cirq.devices.GridQubit(1,i) for i in range(qubit_num)];
   qubits = [cirq.devices.GridQubit(2,i) for i in range(qubit_num)];
@@ -25,4 +26,9 @@ def quantum_teleportation(qubit_num):
     circuit.append(cirq.ops.CNOT(qubits[i], alice_qubits[i]));
     circuit.append(cirq.ops.H(qubits[i]));
   circuit.append(cirq.ops.measure_each(*(qubits + alice_qubits)));
-  return circuit;
+  return circuit, bob_qubits;
+
+def quantum_teleportation_receive(bob_qubits, control_bits):
+  assert search('[^01]', control_bits) is None and len(control_bits) % 2 == 0;
+  circuit = cirq.circuits.Circuit();
+
