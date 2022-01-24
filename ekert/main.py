@@ -11,8 +11,9 @@ flags.DEFINE_boolean('has_eve', False, "whether eve presents");
 
 def main(unused_argv):
   alice_basises = np.random.randint(low = 0, high = 3, size = (FLAGS.key_length * 3,));
-  bob_basises = np.random.randint(low = 0, high = 3, size = (FLAGS.key_length * 3,));  eve_basises = np.random.randint(low = 0, high = 3, size = (FLAGS.key_length * 3,));
-  circuit = ekert(FLAGS.key_length * 3, alice_basises, bob_basises);
+  bob_basises = np.random.randint(low = 0, high = 3, size = (FLAGS.key_length * 3,));  
+  eve_basises = np.random.randint(low = 0, high = 3, size = (FLAGS.key_length * 3,));
+  circuit = ekert(FLAGS.key_length * 3, alice_basises, bob_basises, eve_basises if FLAGS.has_eve else None);
   # 1) alice and bob measure entangled qubit pair with their independendly selected basises
   result = cirq.Simulator().run(program = circuit, repetitions = 1);
   # 2) both send their basises to each other, and choose the measures with the same basises

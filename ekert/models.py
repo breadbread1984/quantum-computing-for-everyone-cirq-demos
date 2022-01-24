@@ -26,7 +26,7 @@ def same_measures_with_different_basises_probability():
       probability += combination_probability * (0.5 * prob1 + 0.5 * prob2);
   return probability;
 
-def ekert(qubit_num, alice_basises, bob_basises):
+def ekert(qubit_num, alice_basises, bob_basises, eve_basises = None):
   assert qubit_num % 3 == 0;
   alice_qubits = [cirq.devices.GridQubit(0, i) for i in range(qubit_num)];
   bob_qubits = [cirq.devices.GridQubit(1, i) for i in range(qubit_num)];
@@ -38,6 +38,17 @@ def ekert(qubit_num, alice_basises, bob_basises):
   # q1 odot q2 = 1/sqrt(2)*00> + 1/sqrt(2)*11>
   # 2) measure with random basis
   for i in range(qubit_num):
+    if eve_basises is not None:
+      # NOTE: if eve presents the measure results of alice and bob are known (or predefined)
+      # so the probability of alice and bob getting the same meeasure with probability 2/3
+      if eve_basises[i] == 0:
+        circuit.append(cirq.ops.I(alice_qubits[i]));
+      elif eve_basises[i] == 1:
+        circuit.append(cirq.ops.ry(-120/180*np.pi)(alice_qubits[i]));
+      elif eve_basises[i] == 2:
+        circuit.append(cirq.ops.ry(-240/180*np.pi)(alice_qubits[i]));
+      # NOTE: currently cirq doesnt support multiple measurements on a same qubit
+      circuit.append(cirq.ops.measure_each(alice_qubits[i]));
     if alice_basises[i] == 0:
       circuit.append(cirq.ops.I(alice_qubits[i]));
     elif alice_basises[i] == 1:
