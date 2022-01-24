@@ -18,8 +18,8 @@ def main(unused_argv):
   for q1, q2 in zip(result.measurements['0'], result.measurements['1']):
     if q1 == 0 and q2 == 0: received_message += '00';
     elif q1 == 0 and q2 == 1: received_message += '01';
-    elif q1 == 1 and q2 == 0: received_message += '10':
-    elif q1 == 1 and q2 == 1: received_message += '11':
+    elif q1 == 1 and q2 == 0: received_message += '10';
+    elif q1 == 1 and q2 == 1: received_message += '11';
   print('bob received message: %s' % received_message);
 
 if __name__ == "__main__":
