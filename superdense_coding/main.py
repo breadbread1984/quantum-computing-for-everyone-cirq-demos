@@ -15,7 +15,9 @@ def main(unused_argv):
   circuit = superdense_coding(FLAGS.message);
   result = cirq.Simulator().run(program = circuit, repetitions = 1);
   received_message = '';
-  for q1, q2 in zip(result.measurements['0'], result.measurements['1']):
+  for i in range(len(FLAGS.message) // 2):
+    q1 = result.measurements['(0, %d)' % i];
+    q2 = result.measurements['(1, %d)' % i];
     if q1 == 0 and q2 == 0: received_message += '00';
     elif q1 == 0 and q2 == 1: received_message += '01';
     elif q1 == 1 and q2 == 0: received_message += '10';
