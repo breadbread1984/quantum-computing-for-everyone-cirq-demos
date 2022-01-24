@@ -18,6 +18,7 @@ def BB84(qubit_num, alice_basises, bob_basises, eve_basises = None):
     # if eve presents
     if eve_basises is not None:
       circuit.append(cirq.ops.I(qubits[idx]) if alice_basis == eve_basises[idx] else cirq.ops.H(qubits[idx]));
+      # NOTE: currently cirq doesnt support multiple measurements on a same qubit
       circuit.append(cirq.ops.measure_each(*qubits)); # eve measures
       circuit.append(cirq.ops.I(qubits[idx]) if eve_basises[idx] == bob_basis else cirq.ops.H(qubits[idx]));
     else:
