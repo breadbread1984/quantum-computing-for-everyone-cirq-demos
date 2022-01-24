@@ -14,10 +14,16 @@ def same_measures_with_different_basises_probability():
     for idx2, basis2 in enumerate(basises):
       if idx1 == idx2: continue; # skip measurement with a same basis
       combination_probability = 1/len(basises) * 1/len(basises);
-      measure1 = measure(basis1, status); # measure1.shape = (2,1)
+      # measure0 = 0> measure1 = 0>
+      measure1 = basis1[:,0:1]; # measure1.shape = (2,1)
       measure2 = measure(basis2, measure1); # measure2.shape = (2,1)
+      prob1 = measure2[0,0] ** 2;
+      # measure0 = 1> measure1 = 1>
+      measure1 = basis1[:,1:2]; # measure1.shape = (2,1)
+      measure2 = measure(basis2, measure1); # measure2.shape = (2,1)
+      prob2 = measure2[1,0] ** 2;
       # NOTE: both measure results are 0 or 1
-      probability += combination_probability * (measure1[0,0]**2 * measure2[0,0]**2 + measure1[1,0]**2 * measure2[1,0]**2);
+      probability += combination_probability * (0.5 * prob1 + 0.5 * prob2);
   return probability;
 
 def ekert(qubit_num, alice_basises, bob_basises):
