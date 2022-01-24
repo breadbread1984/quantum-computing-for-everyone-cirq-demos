@@ -3,7 +3,7 @@
 import numpy as np;
 import cirq;
 from absl import app, flags;
-from models import ekert, same_measures_with_different_basises_probability;
+from models import ekert, same_measures_with_different_basises_probability, same_measures_with_different_basises_probability_when_eve_presents;
 
 FLAGS = flags.FLAGS;
 flags.DEFINE_integer('key_length', 5, "expected key length");
@@ -23,6 +23,8 @@ def main(unused_argv):
   # 3) calculate the probability of both alice and bob get the same measure when they choose different basis
   probability = same_measures_with_different_basises_probability();
   print("expected probability of both alice and bob get the same measure when they choose different basis is %f" % probability);
+  probability = same_measures_with_different_basises_probability_when_eve_presents();
+  print("expected probability of both alice and bob get the same measure when they choose different basis when eve presents is %f" % probability);
   alice_measures_on_different_basis = [int(result.measurements['(0, %d)' % (i,)]) for i in range(FLAGS.key_length * 3) if alice_basises[i] != bob_basises[i]];
   bob_measures_on_different_basis = [int(result.measurements['(1, %d)' % (i,)]) for i in range(FLAGS.key_length * 3) if alice_basises[i] != bob_basises[i]];
   same_count = np.sum((np.array(alice_measures_on_different_basis) == np.array(bob_measures_on_different_basis)).astype(np.int32));

@@ -3,6 +3,25 @@
 import numpy as np;
 import cirq;
 
+def same_measures_with_different_basises_probability_when_eve_presents():
+  results = dict();
+  same_counts = 0;
+  total_counts = 0;
+  for combination in range(8):
+    binary = bin(combination)[2:];
+    predefined_measure_results = '0' * (3 - len(binary)) + binary;
+    assert len(predefined_measure_results) == 3;
+    # basises are one among [B1(0),B2(0)], [B1(120),B2(120)], [B1(240), B2(240)]
+    for basis1_idx in range(3):
+      measure1_result = int(predefined_measure_results[basis1_idx]); # 0> or 1>
+      for basis2_idx in range(3):
+        measure2_result = int(predefined_measure_results[basis2_idx]); # 0> or 1>
+        if measure1_result == measure2_result and basis1_idx != basis2_idx:
+          # two measures are the same when using different basis
+          same_counts += 1;
+        total_counts += 1;
+  return same_counts / total_counts;
+
 def same_measures_with_different_basises_probability():
   probability = 0;
   measure = lambda basis, superposition: np.dot(np.transpose(basis), superposition);
