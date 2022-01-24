@@ -14,8 +14,8 @@ def main():
   probability = strange_results();
   print('if results are defined at measure time. then the probability of two measure results concide with each other is %f' % probability);
   # 3) experimental results
-  qubit_num = 10; # how many entangled qubit pairs per test
-  test_num = 100; # how many tests
+  qubit_num = 100; # how many entangled qubit pairs per test
+  test_num = 100000; # how many tests
   circuit = measure_network(qubit_num);
   results = cirq.Simulator().run(program = circuit, repetitions = test_num);
   same_count = 0;
