@@ -34,8 +34,7 @@ def quantum_teleportation_receive(control_bits):
   bob_qubits = [cirq.devices.GridQubit(1,i) for i in range(qubit_num)];
   circuit = cirq.circuits.Circuit();
   # 1) post process
-  # NOTE: quantum teleportation occurs here, but cannot leave circuit without measuring bob's qubits 
-  # so cannot show the teleported qubit status to you.
+  # NOTE: quantum teleportation occurs here!
   for i in range(0, len(control_bits), 2):
     bits = control_bits[i:i+2];
     qidx = i // 2;
@@ -43,6 +42,7 @@ def quantum_teleportation_receive(control_bits):
     elif bits == '01': circuit.append(cirq.ops.X(bob_qubits[qidx]));
     elif bits == '10': circuit.append(cirq.ops.Z(bob_qubits[qidx]));
     elif bits == '11': circuit.append(cirq.ops.Y(bob_qubits[qidx]));
-  # FIXME: circuit must contain measure operation
+  # FIXME: circuit must contain measure operation, but measurement destroy the teleported qubit status
+  # so cannot show the teleported qubit status to you.
   circuit.append(cirq.ops.measure_each(*bob_qubits));
   return circuit;
