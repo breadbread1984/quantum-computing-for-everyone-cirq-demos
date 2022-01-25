@@ -33,4 +33,12 @@ def quantum_teleportation_receive(control_bits):
   qubit_num = len(control_bits) // 2;
   bob_qubits = [cirq.devices.GridQubit(1,i) for i in range(qubit_num)];
   circuit = cirq.circuits.Circuit();
-  # 1) 
+  # 1) post process
+  for i in range(0, len(control_bits), 2):
+    bits = control_bits[i:i+2];
+    qidx = i // 2;
+    if bits == '00': circuit.append(cirq.ops.I(bob_qubits[qidx]));
+    elif bits == '01': circuit.append(cirq.ops.X(bob_qubits[qidx]));
+    elif bits == '10': circuit.append(cirq.ops.Z(bob_qubits[qidx]));
+    elif bits == '11': circuit.append(cirq.ops.Y(bob_qubits[qidx]));
+  return circuit;
