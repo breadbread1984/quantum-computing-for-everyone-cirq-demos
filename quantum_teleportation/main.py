@@ -9,6 +9,7 @@ FLAGS = flags.FLAGS;
 flags.DEFINE_integer('qubit_length', 10, help = "how many qubit to send");
 
 def main(unused_argv):
+  # NOTE: keep the simulator to keep quantum status between send and receive circuit executions
   device = cirq.Simulator();
   circuit = quantum_teleportation_send(FLAGS.qubit_length);
   result = device.run(program = circuit, repetitions = 1);
@@ -23,6 +24,8 @@ def main(unused_argv):
   print('alice generate control bits: %s' % control_bits);
   circuit = quantum_teleportation_receive(control_bits);
   result = device.run(program = circuit, repetitions = 1);
+  bob_measures = [int(result.measurements['(1, %d)' % (i,)]) for i in range(FLAGS.qubit_length)];
+  assert np.all(np.array(alice_measures) == np.array(bob_measures)), "two circuit execution doesn't use a same qubits context!";
 
 if __name__ == "__main__":
   app.run(main);
