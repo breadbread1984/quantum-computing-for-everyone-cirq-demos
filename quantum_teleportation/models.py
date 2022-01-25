@@ -26,9 +26,11 @@ def quantum_teleportation_send(qubit_num):
     circuit.append(cirq.ops.CNOT(qubits[i], alice_qubits[i]));
     circuit.append(cirq.ops.H(qubits[i]));
   circuit.append(cirq.ops.measure_each(*(qubits + alice_qubits)));
-  return circuit, bob_qubits;
+  return circuit;
 
-def quantum_teleportation_receive(bob_qubits, control_bits):
+def quantum_teleportation_receive(control_bits):
   assert search('[^01]', control_bits) is None and len(control_bits) % 2 == 0;
+  qubit_num = len(control_bits) // 2;
+  bob_qubits = [cirq.devices.GridQubit(1,i) for i in range(qubit_num)];
   circuit = cirq.circuits.Circuit();
-
+  # 1) 
