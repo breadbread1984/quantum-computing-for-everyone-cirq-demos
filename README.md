@@ -2,6 +2,14 @@
 
 this repository contains implements of algorithms introduced in book [Quantum Computing for Everyone](https://mitpress.mit.edu/books/quantum-computing-everyone).
 
+# prerequisite packages
+
+install prerequisite packages with the following command
+
+```shell
+pip3 install -r requirements.txt
+```
+
 # algorithms
 
 | Algorithm | chapter in book | description | location |
