@@ -26,7 +26,7 @@ def quantum_teleportation_send(qubit_num):
     circuit.append(cirq.ops.CNOT(qubits[i], alice_qubits[i]));
     circuit.append(cirq.ops.H(qubits[i]));
   circuit.append(cirq.ops.measure_each(*(qubits + alice_qubits)));
-  return circuit;
+  return circuit, np.stack([dx, dy, dz], axis = -1);
 
 def quantum_teleportation_receive(control_bits):
   assert search('[^01]', control_bits) is None and len(control_bits) % 2 == 0;

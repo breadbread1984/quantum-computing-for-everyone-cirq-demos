@@ -12,7 +12,7 @@ def main(unused_argv):
   # NOTE: keep the simulator to keep quantum status between send and receive circuit executions
   device = cirq.Simulator();
   circuit = quantum_teleportation_send(FLAGS.qubit_length);
-  result = device.run(program = circuit, repetitions = 1);
+  result, d = device.run(program = circuit, repetitions = 1);
   alice_measures = [int(result.measurements['(0, %d)' % (i,)]) for i in range(FLAGS.qubit_length)];
   qubit_measures = [int(result.measurements['(2, %d)' % (i,)]) for i in range(FLAGS.qubit_length)];
   control_bits = '';
