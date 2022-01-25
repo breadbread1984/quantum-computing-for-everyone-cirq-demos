@@ -11,7 +11,7 @@ flags.DEFINE_integer('qubit_length', 10, help = "how many qubit to send");
 def main(unused_argv):
   device = cirq.Simulator();
   circuit = quantum_teleportation_send(FLAGS.qubit_length);
-  result = device.run(program = circuit, repetitions = 1);
+  result, d = device.run(program = circuit, repetitions = 1);
   alice_measures = [int(result.measurements['(0, %d)' % (i,)]) for i in range(FLAGS.qubit_length)];
   qubit_measures = [int(result.measurements['(2, %d)' % (i,)]) for i in range(FLAGS.qubit_length)];
   control_bits = '';
