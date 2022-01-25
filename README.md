@@ -11,3 +11,4 @@ this repository contains implements of algorithms introduced in book [Quantum Co
 | bell's inequality | 5.5 Bell's Inequality | the inequality to prove quantum mechanics agains classical explanation | [link](./bell_inequality) |
 | Ekert | 5.9 The Ekert Protocol for Quantum Key Distribution | quantum key distribution algorithm | [link](./ekert) |
 | Super Dense Coding | 7.9 Superdense Coding | algorithm for sending bits by qubits | [link](./superdense_coding) |
+| Quantum Teleportation | 7.10 Quantum Teleportation | algorithm for sending qubits by bits | [link](./quantum_teleportation) |
