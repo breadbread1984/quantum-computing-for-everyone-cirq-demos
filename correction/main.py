@@ -6,13 +6,14 @@ from models import communication, correction;
 
 FLAGS = flags.FLAGS;
 
-flags.DEFINE_integer('qubit_num', 10, help = 'how many qubit to send');
+flags.DEFINE_integer('qubit_num', 5, help = 'how many qubit to send');
 
 def main(unused_argv):
   device = cirq.sim.Simulator();
-  circuit = communication(FLAGS.qubit_num);
+  circuit, flip_idx = communication(FLAGS.qubit_num);
   result = device.run(program = circuit, repetitions = 1);
   correction_code = '';
+  print('flip idx:', flip_idx);
   for i in range(FLAGS.qubit_num):
     correction_code += str(int(result.measurements['(3, %d)' % i]));
     correction_code += str(int(result.measurements['(4, %d)' % i]));
