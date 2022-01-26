@@ -20,3 +20,4 @@ pip3 install -r requirements.txt
 | Ekert | 5.9 The Ekert Protocol for Quantum Key Distribution | quantum key distribution algorithm | [link](./ekert) |
 | Super Dense Coding | 7.9 Superdense Coding | algorithm for sending bits by qubits | [link](./superdense_coding) |
 | Quantum Teleportation | 7.10 Quantum Teleportation | algorithm for sending qubits by bits | [link](./quantum_teleportation) |
+| Correction | 7.11 Correction | algorithm to correct flips during communication | [link](./correction) |
