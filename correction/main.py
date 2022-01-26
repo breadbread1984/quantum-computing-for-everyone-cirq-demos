@@ -24,6 +24,7 @@ def main(unused_argv):
     q1 += int(result.measurements['(0, %d)' % i]);
     q2 += int(result.measurements['(1, %d)' % i]);
     q3 += int(result.measurements['(2, %d)' % i]);
+    assert q1[-1] == q2[-1] and q2[-1] == q3[-1], 'correction failed';
   print('q1: %s' % q1);
   print('q2: %s' % q2);
   print('q3: %s' % q3);
