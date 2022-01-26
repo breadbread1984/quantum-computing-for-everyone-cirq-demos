@@ -1,0 +1,48 @@
+#!/usr/bin/python3
+
+from re import search;
+import numpy as np;
+import cirq;
+
+def communication(qubit_num):
+  circuit = cirq.circuits.Circuit();
+  # 1) generate a triple of entangled qubits
+  for i in range(qubit_num):
+    dx = np.random.uniform(low = 0, high = np.pi);
+    dy = np.random.uniform(low = 0, high = np.pi);
+    dz = np.random.uniform(low = 0, high = 2 * np.pi);
+    # 1.1) generate a random status qubit
+    circuit.append(cirq.ops.rx(dx)(cirq.devices.GridQubit(0, i)));
+    circuit.append(cirq.ops.ry(dy)(cirq.devices.GridQubit(0, i)));
+    circuit.append(cirq.ops.rz(dz)(cirq.devices.GridQubit(0, i)));
+    # 1.2) entangle first and second qubit
+    circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(0, i), cirq.devices.GridQubit(1, i)));
+    # 1.3) entangle first and thrid qubit
+    circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(0, i), cirq.devices.GridQubit(2, i)));
+  # 2) create odd and even correction
+  for i in range(qubit_num):
+    # 2.1) entangle first qubit and first correction qubit
+    circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(0, i), cirq.devices.GridQubit(3, i)));
+    # 2.2) entangle second qubit and first correction qubit
+    circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(1, i), cirq.devices.GridQubit(3, i)));
+    # 2.3) entangle first qubit and second correction qubit
+    circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(0, i), cirq.devices.GridQubit(4, i)));
+    # 2.4) entangle thrid qubit and second correction qubit
+    circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(2, i), cirq.devices.GridQubit(4, i)));
+  return circuit;
+
+def correction(correction_code):
+  assert len(correction_code)%2 == 0 and search('[^01]', correction_code) is None;
+  qubit_num = len(correction_code) // 2;
+  circuit = cirq.circuits.Circuit();
+  for i in range(qubit_num):
+    cc = correction_code[i*2:(i+1)*2];
+    if cc == '00': continue;
+    elif cc == '11':
+      circuit.append(cirq.ops.X(cirq.devices.GridQubit(0, i)));
+    elif cc == '10':
+      circuit.append(cirq.ops.X(cirq.devices.GridQubit(1, i)));
+    elif cc == '01':
+      circuit.append(cirq.ops.X(cirq.devices.GridQubit(2, i)));
+  return circuit;
+
