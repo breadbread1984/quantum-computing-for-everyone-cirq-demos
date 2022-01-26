@@ -14,7 +14,19 @@ def communication(qubit_num):
     circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(0, i), cirq.devices.GridQubit(1, i)));
     # 1.3) entangle first and thrid qubit
     circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(0, i), cirq.devices.GridQubit(2, i)));
-  # 2) create odd and even correction
+  # 2) create random flip to one of the first three qubits
+  flip_idx = list()
+  for i in range(qubit_num):
+    qidx = np.random.randint(low = 0, high = 3);
+    circuit.append(cirq.ops.X(cirq.devices.GridQubit(qidx, i)));
+    flip_idx.append(qidx);
+  '''
+  for i in range(qubit_num):
+    circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(0, i)));
+    circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(1, i)));
+    circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(2, i)));
+  '''
+  # 3) create odd and even correction
   for i in range(qubit_num):
     # 2.1) entangle first qubit and first correction qubit
     circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(0, i), cirq.devices.GridQubit(3, i)));
@@ -24,12 +36,6 @@ def communication(qubit_num):
     circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(0, i), cirq.devices.GridQubit(4, i)));
     # 2.4) entangle thrid qubit and second correction qubit
     circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(2, i), cirq.devices.GridQubit(4, i)));
-  # 3) create random flip to one of the first three qubits
-  flip_idx = list()
-  for i in range(qubit_num):
-    qidx = np.random.randint(low = 0, high = 3);
-    circuit.append(cirq.ops.X(cirq.devices.GridQubit(qidx, i)));
-    flip_idx.append(qidx);
   # 4) measure correction qubits
   for i in range(qubit_num):
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(3, i)));
