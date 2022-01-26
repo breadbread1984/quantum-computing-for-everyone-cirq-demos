@@ -29,4 +29,6 @@ def main(unused_argv):
   print('q2: %s' % q2);
   print('q3: %s' % q3);
 
+if __name__ == "__main__":
+  app.run(main);
 
