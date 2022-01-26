@@ -28,6 +28,7 @@ def communication(qubit_num):
   for i in range(qubit_num):
     qidx = np.random.randint(low = 0, high = 3);
     circuit.append(cirq.ops.X(cirq.devices.GridQubit(qidx, i)));
+  # 4) measure correction qubits
   for i in range(qubit_num):
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(3, i)));
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(4, i)));
