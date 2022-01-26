@@ -6,7 +6,7 @@ from models import communication, correction;
 
 FLAGS = flags.FLAGS;
 
-flags.DFEINE_integer('qubit_num', 10, help = 'how many qubit to send');
+flags.DEFINE_integer('qubit_num', 10, help = 'how many qubit to send');
 
 def main(unused_argv):
   device = cirq.sim.Simulator();
