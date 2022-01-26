@@ -25,14 +25,16 @@ def communication(qubit_num):
     # 2.4) entangle thrid qubit and second correction qubit
     circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(2, i), cirq.devices.GridQubit(4, i)));
   # 3) create random flip to one of the first three qubits
+  flip_idx = list()
   for i in range(qubit_num):
     qidx = np.random.randint(low = 0, high = 3);
     circuit.append(cirq.ops.X(cirq.devices.GridQubit(qidx, i)));
+    flip_idx.append(qidx);
   # 4) measure correction qubits
   for i in range(qubit_num):
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(3, i)));
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(4, i)));
-  return circuit;
+  return circuit, flip_idx;
 
 def correction(correction_code):
   assert len(correction_code)%2 == 0 and search('[^01]', correction_code) is None;
