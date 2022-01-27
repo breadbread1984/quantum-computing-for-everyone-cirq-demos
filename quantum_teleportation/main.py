@@ -20,7 +20,7 @@ def main(unused_argv):
   # get measure results to verify the teleportation
   qubits = '';
   for i in range(FLAGS.qubit_length):
-    qubits += str(int(result.measurements('(1, %d)' % i)));
+    qubits += str(int(result.measurements['(1, %d)' % i]));
   print('received qubits: ', qubits);
   # 2) teleport qubits
   rotations = np.random.uniform(low = (0, 0, 0), high = (np.pi, np.pi, 2 * np.pi), size = (FLAGS.qubit_length,3));
