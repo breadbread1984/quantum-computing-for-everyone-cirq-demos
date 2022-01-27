@@ -4,7 +4,7 @@ from re import search;
 import numpy as np;
 import cirq;
 
-def quantum_teleportation_send(qubit_num):
+def quantum_teleportation(qubit_num):
   alice_qubits = [cirq.devices.GridQubit(0,i) for i in range(qubit_num)];
   bob_qubits = [cirq.devices.GridQubit(1,i) for i in range(qubit_num)];
   qubits = [cirq.devices.GridQubit(2,i) for i in range(qubit_num)];
@@ -26,23 +26,16 @@ def quantum_teleportation_send(qubit_num):
     circuit.append(cirq.ops.CNOT(qubits[i], alice_qubits[i]));
     circuit.append(cirq.ops.H(qubits[i]));
   circuit.append(cirq.ops.measure_each(*(qubits + alice_qubits)));
-  return circuit;
+  # 4) restore qubits status
+  # qubit, alice_qubit
+  # 0,0=>I
+  # 0,1=>X
+  # 1,0=>Z
+  # 1,1=>Y=X+Z
+  # NOTE: alice's bit decide whether to rotate bob's qubit around X axis
+  # NOTE: qubit's bit decide whether to rotate bob's qubit around Z axis
+  for i in range(qubit_num):
+    circuit.append(cirq.ops.CX(alice_qubits[i], bob_qubits[i]));
+    circuit.append(cirq.ops.CZ(qubits[i], bob_qubits[i]));
+  return circuit, np.stack([dx,dy,dz], axis = -1);
 
-def quantum_teleportation_receive(control_bits):
-  assert search('[^01]', control_bits) is None and len(control_bits) % 2 == 0;
-  qubit_num = len(control_bits) // 2;
-  bob_qubits = [cirq.devices.GridQubit(1,i) for i in range(qubit_num)];
-  circuit = cirq.circuits.Circuit();
-  # 1) post process
-  # NOTE: quantum teleportation occurs here!
-  for i in range(0, len(control_bits), 2):
-    bits = control_bits[i:i+2];
-    qidx = i // 2;
-    if bits == '00': circuit.append(cirq.ops.I(bob_qubits[qidx]));
-    elif bits == '01': circuit.append(cirq.ops.X(bob_qubits[qidx]));
-    elif bits == '10': circuit.append(cirq.ops.Z(bob_qubits[qidx]));
-    elif bits == '11': circuit.append(cirq.ops.Y(bob_qubits[qidx]));
-  # FIXME: circuit must contain measure operation, but measurement destroy the teleported qubit status
-  # so cannot show the teleported qubit status to you.
-  circuit.append(cirq.ops.measure_each(*bob_qubits));
-  return circuit;
