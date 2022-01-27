@@ -9,9 +9,8 @@ FLAGS = flags.FLAGS;
 flags.DEFINE_integer('qubit_num', 5, help = 'how many qubit to send');
 
 def main(unused_argv):
-  device = cirq.sim.Simulator();
   circuit, flip_idx = communication(FLAGS.qubit_num);
-  result = device.simulate(program = circuit);
+  result = cirq.sim.Simulator().run(program = circuit, repetitions = 1);
   print('flip_idx: ', flip_idx);
   correction_code = '';
   for i in range(FLAGS.qubit_num):
@@ -19,7 +18,7 @@ def main(unused_argv):
     correction_code += str(int(result.measurements['(4, %d)' % i]));
   print('correction code is %s' % correction_code);
   circuit = correction(correction_code);
-  result = device.simulate(program = circuit, initial_state = result._final_simulator_state.state_vector);
+  result = cirq.sim.Simulator().run(program = circuit, repetitions = 1);
   q1,q2,q3 = '','','';
   for i in range(FLAGS.qubit_num):
     q1 += str(int(result.measurements['(0, %d)' % i]));
