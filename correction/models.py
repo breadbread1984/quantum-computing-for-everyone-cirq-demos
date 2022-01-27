@@ -20,12 +20,6 @@ def communication(qubit_num):
     qidx = np.random.randint(low = 0, high = 3);
     circuit.append(cirq.ops.X(cirq.devices.GridQubit(qidx, i)));
     flip_idx.append(qidx);
-  '''
-  for i in range(qubit_num):
-    circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(0, i)));
-    circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(1, i)));
-    circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(2, i)));
-  '''
   # 3) create odd and even correction
   for i in range(qubit_num):
     # 2.1) entangle first qubit and first correction qubit
