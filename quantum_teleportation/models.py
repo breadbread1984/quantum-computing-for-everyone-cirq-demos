@@ -4,19 +4,24 @@ from re import search;
 import numpy as np;
 import cirq;
 
-def quantum_teleportation(qubit_num):
+def quantum_teleportation(rotations, measure = False):
+  qubit_num = rotations.shape[0];
   alice_qubits = [cirq.devices.GridQubit(0,i) for i in range(qubit_num)];
   bob_qubits = [cirq.devices.GridQubit(1,i) for i in range(qubit_num)];
   qubits = [cirq.devices.GridQubit(2,i) for i in range(qubit_num)];
-  dx = np.random.uniform(low = 0, high = np.pi, size = (qubit_num,));
-  dy = np.random.uniform(low = 0, high = np.pi, size = (qubit_num,));
-  dz = np.random.uniform(low = 0, high = 2 * np.pi, size = (qubit_num,));
   circuit = cirq.circuits.Circuit();
-  # 1) prepare qubits to send
-  for i in range(qubit_num):
-    circuit.append(cirq.ops.rx(dx[i])(qubits[i]));
-    circuit.append(cirq.ops.ry(dy[i])(qubits[i]));
-    circuit.append(cirq.ops.rz(dz[i])(qubits[i]));
+  # 1) generate qubits to send
+  if len(rotations.shape) == 2:
+    for i in range(qubit_num):
+      circuit.append(cirq.ops.rx(rotations[i, 0])(qubits[i]));
+      circuit.append(cirq.ops.ry(rotations[i, 1])(qubits[i]));
+      circuit.append(cirq.ops.rz(rotations[i, 2])(qubits[i]));
+  elif len(rotations.shape) == 1:
+    for i in range(qubit_num):
+      if rotations[i] == 0: circuit.append(cirq.ops.I(qubits[i]));
+      else: circuit.append(cirq.ops.X(qubits[i]));
+  else:
+    raise Exception('dimension of rotations must be either 1 or 2');
   # 2) generate a pair of entangled qubits
   for i in range(qubit_num):
     circuit.append(cirq.ops.H(alice_qubits[i]));
@@ -37,5 +42,7 @@ def quantum_teleportation(qubit_num):
   for i in range(qubit_num):
     circuit.append(cirq.ops.CX(alice_qubits[i], bob_qubits[i]));
     circuit.append(cirq.ops.CZ(qubits[i], bob_qubits[i]));
-  return circuit, np.stack([dx,dy,dz], axis = -1);
-
+  if measure:
+    for i in range(qubit_num):
+      circuit.append(cirq.ops.measure_each(bob_qubits[i]));
+  return circuit;
