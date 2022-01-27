@@ -4,7 +4,7 @@ from re import search;
 import numpy as np;
 import cirq;
 
-def communication(qubit_num):
+def correction(qubit_num):
   circuit = cirq.circuits.Circuit();
   # 1) generate q1 odot q2 odot q3 = 1/sqrt(2)*000>+1/sqrt(2)*111>
   for i in range(qubit_num):
@@ -34,24 +34,20 @@ def communication(qubit_num):
   for i in range(qubit_num):
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(3, i)));
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(4, i)));
-  return circuit, flip_idx;
-
-def correction(correction_code):
-  assert len(correction_code)%2 == 0 and search('[^01]', correction_code) is None;
-  qubit_num = len(correction_code) // 2;
-  circuit = cirq.circuits.Circuit();
+  # 5) correction qubits
   for i in range(qubit_num):
-    cc = correction_code[i*2:(i+1)*2];
-    if cc == '00': continue;
-    elif cc == '11':
-      circuit.append(cirq.ops.X(cirq.devices.GridQubit(0, i)));
-    elif cc == '10':
-      circuit.append(cirq.ops.X(cirq.devices.GridQubit(1, i)));
-    elif cc == '01':
-      circuit.append(cirq.ops.X(cirq.devices.GridQubit(2, i)));
+    # 11 => flip q1
+    circuit.append(cirq.ops.CCNOT(cirq.devices.GridQubit(3, i), cirq.devices.GridQubit(4, i), cirq.devices.GridQubit(0, i)));
+    # 10 => flip q2
+    circuit.append(cirq.ops.X(cirq.devices.GridQubit(4, i)));
+    circuit.append(cirq.ops.CCNOT(cirq.devices.GridQubit(3, i), cirq.devices.GridQubit(4, i), cirq.devices.GridQubit(1, i)));
+    # 01 => flip q3
+    circuit.append(cirq.ops.X(cirq.devices.GridQubit(3, i)));
+    circuit.append(cirq.ops.X(cirq.devices.GridQubit(4, i)));
+    circuit.append(cirq.ops.CCNOT(cirq.devices.GridQubit(3, i), cirq.devices.GridQubit(4, i), cirq.devices.GridQubit(2, i)));
+  # 6) measure to verify
   for i in range(qubit_num):
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(0, i)));
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(1, i)));
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(2, i)));
   return circuit;
-
