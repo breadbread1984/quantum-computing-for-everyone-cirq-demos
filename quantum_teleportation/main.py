@@ -14,6 +14,7 @@ def main(unused_argv):
   device = cirq.Simulator();
   circuit, rotations = quantum_teleportation(FLAGS.qubit_length);
   result = device.simulate(program = circuit);
+  print(result.final_state_vector)
 
 if __name__ == "__main__":
   app.run(main);
