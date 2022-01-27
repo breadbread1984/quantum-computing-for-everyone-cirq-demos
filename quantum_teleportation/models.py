@@ -31,7 +31,7 @@ def quantum_teleportation(qubit_num):
   # 0,0=>I
   # 0,1=>X
   # 1,0=>Z
-  # 1,1=>Y=X+Z
+  # 1,1=>Y=X+Z (can be proved through transform matrix product)
   # NOTE: alice's bit decide whether to rotate bob's qubit around X axis
   # NOTE: qubit's bit decide whether to rotate bob's qubit around Z axis
   for i in range(qubit_num):
