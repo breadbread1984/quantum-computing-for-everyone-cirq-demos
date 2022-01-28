@@ -16,6 +16,7 @@ def deutsch(use_balance = True):
   q1 = cirq.devices.LineQubit(0);
   q2 = cirq.devices.LineQubit(1);
   circuit = cirq.circuits.Circuit();
+  circuit.append(cirq.ops.X(q2));
   circuit.append(cirq.ops.H(q1));
   circuit.append(cirq.ops.H(q2));
   oracle(circuit, q1, q2);
