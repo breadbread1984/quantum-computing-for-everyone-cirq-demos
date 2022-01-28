@@ -17,7 +17,7 @@ def main():
   qubit_num = 100; # how many entangled qubit pairs per test
   test_num = 100000; # how many tests
   circuit = measure_network(qubit_num);
-  results = cirq.Simulator().run(program = circuit, repetitions = test_num);
+  results = cirq.sim.Simulator().run(program = circuit, repetitions = test_num);
   same_count = 0;
   total_count = 0;
   for i in range(qubit_num):

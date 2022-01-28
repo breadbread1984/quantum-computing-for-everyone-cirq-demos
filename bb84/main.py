@@ -16,7 +16,7 @@ def main():
   eve_basises = np.random.randint(0,2,size = (FLAGS.key_length * 4,)) if FLAGS.has_eve else None;
 
   circuit, alice_measures = BB84(FLAGS.key_length * 4, alice_basises, bob_basises, eve_basises);
-  result = cirq.Simulator().run(program = circuit, repetitions = 1);
+  result = cirq.sim.Simulator().run(program = circuit, repetitions = 1);
   # 1) what alice knows exclusively
   alice_measures_on_same_basis = [alice_measures[i] for i in range(FLAGS.key_length * 4) if alice_basises[i] == bob_basises[i]];
   # 2) what bob knows exclusively

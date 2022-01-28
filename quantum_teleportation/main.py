@@ -11,7 +11,7 @@ flags.DEFINE_integer('qubit_length', 10, help = "how many qubit to send");
 
 def main(unused_argv):
   # NOTE: keep the simulator to keep quantum status between send and receive circuit executions
-  device = cirq.Simulator();
+  device = cirq.sim.Simulator();
   # 1) teleport classical bits
   x_flips = np.random.randint(low = 0, high = 2, size = (FLAGS.qubit_length,));
   print('send qubits: ', x_flips);

@@ -15,7 +15,7 @@ def main(unused_argv):
   eve_basises = np.random.randint(low = 0, high = 3, size = (FLAGS.key_length * 3,));
   circuit = ekert(FLAGS.key_length * 3, alice_basises, bob_basises, eve_basises if FLAGS.has_eve else None);
   # 1) alice and bob measure entangled qubit pair with their independendly selected basises
-  result = cirq.Simulator().run(program = circuit, repetitions = 1);
+  result = cirq.sim.Simulator().run(program = circuit, repetitions = 1);
   # 2) both send their basises to each other, and choose the measures with the same basises
   alice_measures_on_same_basis = [int(result.measurements['(0, %d)' % (i,)]) for i in range(FLAGS.key_length * 3) if alice_basises[i] == bob_basises[i]];
   bob_measures_on_same_basis = [int(result.measurements['(1, %d)' % (i,)]) for i in range(FLAGS.key_length * 3) if alice_basises[i] == bob_basises[i]];
