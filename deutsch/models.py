@@ -12,7 +12,7 @@ def balance_func(circuit, q1, q2):
   circuit.append(cirq.ops.CNOT(q1, q2));
 
 def deutsch(use_balance = True):
-  oracle = const_fun if use_balance == False else balance_func;
+  oracle = const_func if use_balance == False else balance_func;
   q1 = cirq.devices.LineQubit(0);
   q2 = cirq.devices.LineQubit(1);
   circuit = cirq.circuits.Circuit();
