@@ -39,12 +39,13 @@ def correction(qubit_num):
     # 11 => flip q1
     circuit.append(cirq.ops.CCNOT(cirq.devices.GridQubit(3, i), cirq.devices.GridQubit(4, i), cirq.devices.GridQubit(0, i)));
     # 10 => flip q2
-    circuit.append(cirq.ops.X(cirq.devices.GridQubit(4, i)));
+    circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(3, i), cirq.devices.GridQubit(4, i)));
     circuit.append(cirq.ops.CCNOT(cirq.devices.GridQubit(3, i), cirq.devices.GridQubit(4, i), cirq.devices.GridQubit(1, i)));
+    circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(3, i), cirq.devices.GridQubit(4, i))); # reset control signal
     # 01 => flip q3
-    circuit.append(cirq.ops.X(cirq.devices.GridQubit(3, i)));
-    circuit.append(cirq.ops.X(cirq.devices.GridQubit(4, i)));
+    circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(4, i), cirq.devices.GridQubit(3, i)));
     circuit.append(cirq.ops.CCNOT(cirq.devices.GridQubit(3, i), cirq.devices.GridQubit(4, i), cirq.devices.GridQubit(2, i)));
+    circuit.append(cirq.ops.CNOT(cirq.devices.GridQubit(4, i), cirq.devices.GridQubit(3, i))); # reset control signal, do or not has nothing to do with outsome, this line can be removed
   # 6) measure to verify
   for i in range(qubit_num):
     circuit.append(cirq.ops.measure_each(cirq.devices.GridQubit(0, i)));
