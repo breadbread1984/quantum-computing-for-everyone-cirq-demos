@@ -22,3 +22,4 @@ pip3 install -r requirements.txt
 | Quantum Teleportation | 7.10 Quantum Teleportation | algorithm for sending qubits by bits | [link](./quantum_teleportation) |
 | Correction | 7.11 Correction | algorithm to correct flips during communication | [link](./correction) |
 | Deutsch | 8.4 Deutsch's Algorithm | algorithm proving the superior of quantum computing | [link](./deutsch) |
+| Deutsch-jozsa | 8.6 Deutsch-Jozsa's Algorithm | extension of Deutsch to function of multiple inputs | [link](./deutsch_jozsa) |
