@@ -16,7 +16,7 @@ def main(unused_argv):
   measure = '';
   for i in range(FLAGS.n_args):
     measure += str(int(result.measurements['%d' % i]));
-  print('measures of qubits are ' % measure);
+  print('measures of qubits are %s' % measure);
   if search('[^0]', measure) is not None:
     print('the function is a balance function');
   else:
