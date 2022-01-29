@@ -3,7 +3,7 @@
 import cirq;
 
 def const_func(circuit, q1, q2):
-  # f(x) = 0 is other words, y^f(x)=y
+  # f(x) = 0, in other words y^f(x)=y
   circuit.append(cirq.ops.I(q1));
   circuit.append(cirq.ops.I(q2));
 

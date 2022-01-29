@@ -12,6 +12,10 @@ def main(unused_argv):
   circuit = deutsch(FLAGS.use_balance);
   result = cirq.sim.Simulator().run(program = circuit, repetitions = 1);
   print('measure %d' % int(result.measurements['0']));
+  if int(result.measurements['0']) == 0:
+    print('this is a constant function');
+  else:
+    print('this is a balance function');
 
 if __name__ == "__main__":
   app.run(main);
