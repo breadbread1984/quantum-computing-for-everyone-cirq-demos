@@ -1,23 +1,26 @@
 #!/usr/bin/python3
 
+from random import shuffle;
 import numpy as np;
 import cirq;
 
-def oracle(circuit, qubits_x, qubits_y):
-  n = len(qubits_x);
+def oracle(circuit, x, y):
+  # random function
+  n = len(x);
   m = np.eye(2**(2 * n));
-  m = np.concatenate([m[:,:2**(2*n-1)], m[:,2**(2*n-1):][:,::-1]], axis = 1);
-  circuit.append(cirq.ops.MatrixGate(m)(*qubits_x, *qubits_y));
+  np.random.shuffle(m);
+  circuit.append(cirq.ops.MatrixGate(m)(*x, *y));
+  return m;
 
 def simon(n):
   hadamard = np.array([[np.sqrt(0.5), np.sqrt(0.5)],[np.sqrt(0.5),-np.sqrt(0.5)]]);
   n_hadamard = cirq.linalg.kron(*([hadamard] * n));
 
   circuit = cirq.circuits.Circuit();
-  qubits_x = [cirq.devices.LineQubit(i) for i in range(n)];
-  qubits_y = [cirq.devices.LineQubit(i) for i in range(n,2*n)];
-  circuit.append(cirq.ops.MatrixGate(n_hadamard)(*qubits_x));
-  oracle(circuit, qubits_x, qubits_y);
-  circuit.append(cirq.ops.MatrixGate(n_hadamard)(*qubits_x));
-  circuit.append(cirq.ops.measure_each(*qubits_x));
-  return circuit;
+  x = [cirq.devices.LineQubit(i) for i in range(n)];
+  y = [cirq.devices.LineQubit(i) for i in range(n,2*n)];
+  circuit.append(cirq.ops.MatrixGate(n_hadamard)(*x));
+  m = oracle(circuit, x, y);
+  circuit.append(cirq.ops.MatrixGate(n_hadamard)(*x));
+  circuit.append(cirq.ops.measure_each(*x));
+  return circuit, m;
