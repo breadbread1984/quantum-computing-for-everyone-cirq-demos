@@ -5,12 +5,15 @@ import numpy as np;
 import cirq;
 
 def oracle(circuit, x, y):
-  # random function
-  n = len(x);
-  m = np.eye(2**(2 * n));
-  np.random.shuffle(m);
-  circuit.append(cirq.ops.MatrixGate(m)(*x, *y));
-  return m;
+  # NOTE: f(x) = x^y and s == y
+  # therefore f(s^x) = s^x^y
+  s = np.random.randint(low = 0, high = 2, size = (len(y),));
+  for qidx, qy in enumerate(y):
+    if s[qidx] == 1:
+      circuit.append(cirq.ops.X(qy));
+  for qx,qy in zip(x,y):
+    circuit.append(cirq.ops.CNOT(qy,qx));
+  return s;
 
 def simon(n):
   hadamard = np.array([[np.sqrt(0.5), np.sqrt(0.5)],[np.sqrt(0.5),-np.sqrt(0.5)]]);
@@ -20,7 +23,7 @@ def simon(n):
   x = [cirq.devices.LineQubit(i) for i in range(n)];
   y = [cirq.devices.LineQubit(i) for i in range(n,2*n)];
   circuit.append(cirq.ops.MatrixGate(n_hadamard)(*x));
-  m = oracle(circuit, x, y);
+  s = oracle(circuit, x, y);
   circuit.append(cirq.ops.MatrixGate(n_hadamard)(*x));
   circuit.append(cirq.ops.measure_each(*x));
-  return circuit, m;
+  return circuit, s;
