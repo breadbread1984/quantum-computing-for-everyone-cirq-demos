@@ -5,14 +5,15 @@ import numpy as np;
 import cirq;
 
 def oracle(circuit, x, y):
-  # NOTE: f(x) = x^y and s == y
-  # therefore f(s^x) = s^x^y
-  s = np.random.randint(low = 0, high = 2, size = (len(y),));
-  for qidx, qy in enumerate(y):
-    if s[qidx] == 1:
-      circuit.append(cirq.ops.X(qy));
-  for qx,qy in zip(x,y):
-    circuit.append(cirq.ops.CNOT(qy,qx));
+  # NOTE: f(x) = x^(x^y)=y if s == 1, therefore, f(s^x) = y
+  #       f(x) = x^y if s == 0, therefore, f(s^x) = x^y
+  # therefore, f(x) = f(s^x), no matter s = 0 or 1
+  n = len(x);
+  s = np.random.randint(low = 0, high = 2, size = (n,));
+  for i in range(n):
+    circuit.append(cirq.ops.CNOT(x[i], y[i]));
+    if s[i] == 1:
+      circuit.append(cirq.ops.CNOT(x[i], y[i]));
   return s;
 
 def simon(n):
