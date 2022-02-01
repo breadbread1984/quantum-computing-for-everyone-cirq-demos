@@ -5,8 +5,8 @@ import numpy as np;
 import cirq;
 
 def oracle(circuit, x, y):
-  # NOTE: f(x) = x^(x^y)=y if s == 1, therefore, f(s^x) = y
-  #       f(x) = x^y if s == 0, therefore, f(s^x) = x^y
+  # NOTE: f(x) = x^(x^y)=y (independent of x) if s == 1, therefore, f(s^x) = y
+  #       f(x) = x^y if s == 0, therefore, f(s^x) = (0^x)^y = x^y
   # therefore, f(x) = f(s^x), no matter s = 0 or 1
   n = len(x);
   s = np.random.randint(low = 0, high = 2, size = (n,));
