@@ -14,6 +14,7 @@ def oracle(circuit, x, y):
     circuit.append(cirq.ops.CNOT(x[i], y[i]));
     if s[i] == 1:
       circuit.append(cirq.ops.CNOT(x[i], y[i]));
+  circuit.append(cirq.ops.SWAP(x[-1],y[-2]));
   return s;
 
 def simon(n):
