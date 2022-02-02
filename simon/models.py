@@ -15,7 +15,6 @@ def oracle(circuit, x, y):
     if s[i] == 1:
       circuit.append(cirq.ops.CNOT(x[i], y[i]));
   circuit.append(cirq.ops.SWAP(x[-1],y[-2]));
-  return s;
 
 def simon(n):
   hadamard = np.array([[np.sqrt(0.5), np.sqrt(0.5)],[np.sqrt(0.5),-np.sqrt(0.5)]]);
@@ -25,7 +24,7 @@ def simon(n):
   x = [cirq.devices.LineQubit(i) for i in range(n)];
   y = [cirq.devices.LineQubit(i) for i in range(n,2*n)];
   circuit.append(cirq.ops.MatrixGate(n_hadamard)(*x));
-  s = oracle(circuit, x, y);
+  oracle(circuit, x, y);
   circuit.append(cirq.ops.MatrixGate(n_hadamard)(*x));
   circuit.append(cirq.ops.measure_each(*x));
-  return circuit, s;
+  return circuit;
