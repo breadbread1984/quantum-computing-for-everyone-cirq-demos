@@ -9,6 +9,7 @@ FLAGS = flags.FLAGS;
 flags.DEFINE_integer('n', default = 2, help = 'number of qubits');
 
 def main(unused_argv):
+  assert FLAGS.n >= 2;
   circuit, idx = grover(FLAGS.n);
   result = cirq.sim.Simulator().run(program = circuit, repetitions = 1);
   search_result = int(''.join([str(int(result.measurements['%d' % i])) for i in range(FLAGS.n)]),2);
