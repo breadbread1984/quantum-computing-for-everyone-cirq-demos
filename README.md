@@ -21,7 +21,7 @@ pip3 install -r requirements.txt
 | Super Dense Coding | 7.9 Superdense Coding | algorithm for sending bits by qubits | [link](./superdense_coding) |
 | Quantum Teleportation | 7.10 Quantum Teleportation | algorithm for sending qubits by bits | [link](./quantum_teleportation) |
 | Correction | 7.11 Correction | algorithm to correct flips during communication | [link](./correction) |
-| Deutsch | 8.4 Deutsch's Algorithm | algorithm proving the superior of quantum computing | [link](./deutsch) |
+| Deutsch | 8.4 Deutsch's Algorithm | algorithm proving the superiority of quantum computing | [link](./deutsch) |
 | Deutsch-jozsa | 8.6 Deutsch-Jozsa's Algorithm | extension of Deutsch to function of multiple inputs | [link](./deutsch_jozsa) |
 | Simon | 8.7 Simon's Algorithm | one of the bounded quantum poly-nomial problems (BQP) | [list](./simon) |
 | Grover | 9.2 Grover's Algorithm | data retrieval algorithm which can find the data in one try | [list](./grover) |
