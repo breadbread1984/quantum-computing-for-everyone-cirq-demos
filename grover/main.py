@@ -11,10 +11,9 @@ flags.DEFINE_integer('n', default = 2, help = 'number of qubits');
 def main(unused_argv):
   circuit, idx = grover(FLAGS.n);
   result = cirq.sim.Simulator().run(program = circuit, repetitions = 1);
-  print(result);
   search_result = int(''.join([str(int(result.measurements['%d' % i])) for i in range(FLAGS.n)]),2);
-  print(search_result);
-  print(idx);
+  print('search result: ', search_result);
+  print('true result: ', idx);
 
 if __name__ == "__main__":
   app.run(main);

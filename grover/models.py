@@ -20,7 +20,7 @@ def oracle(circuit, x, y):
 def grover(n = 2):
   hadamard = np.array([[np.sqrt(0.5), np.sqrt(0.5)],[np.sqrt(0.5),-np.sqrt(0.5)]]);
   n_hadamard = cirq.linalg.kron(*([hadamard] * n));
-  amplitude = 1/(np.sqrt(2)**n)*(np.ones(2**n) - 2 * np.eye(2**n));
+  amplitude = 1/(2**(n-1))*(np.ones(2**n) - 2**(n-1) * np.eye(2**n));
 
   x = [cirq.devices.LineQubit(i) for i in range(n)];
   y = cirq.devices.LineQubit(n);
