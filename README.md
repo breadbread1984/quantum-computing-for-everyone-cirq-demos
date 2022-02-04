@@ -23,3 +23,4 @@ pip3 install -r requirements.txt
 | Correction | 7.11 Correction | algorithm to correct flips during communication | [link](./correction) |
 | Deutsch | 8.4 Deutsch's Algorithm | algorithm proving the superior of quantum computing | [link](./deutsch) |
 | Deutsch-jozsa | 8.6 Deutsch-Jozsa's Algorithm | extension of Deutsch to function of multiple inputs | [link](./deutsch_jozsa) |
+| Simon | 8.7 Simon's Algorithm | one of the bounded quantum poly-nomial problem (BQP) | [list](./simon) |
