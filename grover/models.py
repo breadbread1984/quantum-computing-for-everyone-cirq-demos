@@ -5,10 +5,13 @@ import cirq;
 
 def oracle(circuit, x, y):
   n = len(x);
+  ccnot = np.eye(2**(n+1));
+  ccnot = np.concatenate([ccnot[:,:-2], ccnot[:,-1:], ccnot[:,-2:-1]], axis = 1);
+
   idx = np.random.randint(low = 0, high = 2, size = (n,));
   for s, q in zip(idx, x):
     if s == 0: circuit.append(cirq.ops.X(q)); # flip qubit to make it flags for controlling output qubit
-  circuit.append(cirq.ops.CCNOT(*x, y));
+  circuit.append(cirq.ops.MatrixGate(ccnot)(*x, y));
   for s, q in zip(idx, x):
     if s == 0: circuit.append(cirq.ops.X(q)); # restore qubit status
   idx = int(''.join(idx.astype(np.str)),2);
